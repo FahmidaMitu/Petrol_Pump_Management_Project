@@ -1,0 +1,64 @@
+{% load static %}
+<html>
+    <head>
+        <title>Login And Registration Form</title>
+        <link rel="stylesheet" href="{% static 'accounts/styles/login.css' %}">
+    </head>
+    <body>
+        <div class="afifa">
+            <div class="form-box">
+                <div class="button-box">
+                    <div id="btn">
+                    </div>
+                    <button type="button" class="toggole-btn" onclick="login()">Log In</button>
+                    <button type="button" class="toggole-btn"onclick="register()">Register</button>
+                </div>
+                <div class="social-icons">
+                    <img src="{% static 'accounts/images/fac.jpg' %}" alt="">
+                    <img src="{% static 'accounts/images/google.jpg' %}" alt="">
+                    <img src="{% static 'accounts/images/twii.jpg' %}" alt="">
+                </div>
+                
+                <form action="login" method="POST" id="login" class="input-group">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="input-field" placeholder="User Name" required>
+                    <input type="password" name="password" class="input-field" placeholder="Enter Password" required>
+                    <input type="checkbox" class="check-box"><span>Remember Password</span>
+                    <button type="submit" class="submit-btn">Log in</button>
+                   
+
+                </form>
+                <form action="register" method="POST" id="register" class="input-group">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="input-field" placeholder="User Name" required>
+                    <input type="email" name="email" class="input-field" placeholder="Email Id" required>
+                    <input type="password" name="password" class="input-field" placeholder="Enter Password" required>
+                    <input type="checkbox" class="check-box"><span>I agree to the terms & conditions</span>
+                    <button type="submit" class="submit-btn">Register</button>
+                </form>
+
+            </div>
+            
+        </div>
+        <script>
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+            function register(){
+                x.style.left = "400px";
+                y.style.left = "50px";
+                z.style.left = "110px";
+
+
+            }
+            function login(){
+                x.style.left = "50px";
+                y.style.left = "450px";
+                z.style.left = "0px";
+
+
+            }
+
+        </script>
+    </body>
+</html>

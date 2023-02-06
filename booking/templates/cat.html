@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'booking/styles/style.css' %}">
+    
+</head>
+<body>
+    <form action="book" method="POST" id="register" class="input-group">
+        {% csrf_token %}
+        <input type="text" name="name" class="input-field" placeholder="User Name" required>
+        <input type="password" name="password" class="input-field" placeholder="Enter Password" required>
+        {% comment %} <input type="text" name="fuel_type" class="input-field" placeholder="Fuel Type" required> {% endcomment %}
+        <select name="fuel_type" id="fuel_type"> 
+                <option value="select">Select</option>
+                <option value="petrol">Petrol</option>
+                <option value="octane">Octane</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+                <option value="lpg">LPG</option>
+                </select>
+        <input type="text" name="fuel_amount" class="input-field" placeholder="Amount" required>
+        {% comment %} <input type="text" name="fuel_price" class="input-field" placeholder="Price" required> {% endcomment %}
+        <button type="submit" class="submit-btn">Booked</button>
+    </form>
+</body>
+</html>

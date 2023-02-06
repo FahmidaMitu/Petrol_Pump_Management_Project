@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+        <title>Gas-N-GO</title>
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+          <link rel="icon" href="static/Gas-N-Go/favicon.ico">
+
+            
+    </head>
+    <body>
+    <nav>
+            <div class="nav-wrapper">
+            <a href="/" class="brand-logo p3">GAS N GO</a>
+             </div>
+    </nav> 
+    {% if user.is_authenticated %}
+    <!-- TODO: design logout button -->
+    <h5 style="background-color:rgba(255, 99, 71, 0.5);color: black;">
+    <a href="{% url 'logout' %}">Logout</a>
+    </h5>
+    <h5 style="background-color:rgba(255, 99, 71, 0.5);color:black;text-align:left;">
+    <a href="{% url 'preview' %}">Booking Information</a>
+    </h5>
+    <div class="container" style="margin-top:50px">
+            <div class="row">
+                <div class="col m4">
+                    <div class="input-field col s12">
+                        <select multiple id="emenities" onchange="getGas()" >
+                            <option value="" disabled selected>Choose your place</option>
+                            <option value="">option</option
+                           <!--- {% for emenitie in emenities %}
+                            <option value="{{emenitie.id}}">{{emenitie.name}}</option>
+                            {% endfor %}-->
+                        </select>
+                        <label>Select Emenities</label>
+                    </div>
+                </div>
+                <div class="col m4">
+                <label>Amount</label>
+                <p class="range-field">
+                <input type="range" onchange="getGas()" id="available_amount" min="0" max="15" value="15">
+                </p>
+
+                </div>
+            </div>
+            <div class="container">
+            <div class="row" id="show_gas_here"></div>
+        </div>
+    {% else %}
+    <!-- TODO: design login button -->
+    <h2>
+    <a href="{% url 'login' %}">Login</a>
+    </h2>
+    {% endif %}
+        
+        <script>
+
+        var show_gas_here = document.getElementById("show_gas_here")
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
+
+        function getGas(){
+            var available_amount = document.getElementById('available_amount')
+            var instance =M.FormSelect.getInstance(document.getElementById('emenities'))
+            //if(instance)
+          //  console.log(instance.getSelectedValues())
+            var emenities = ''
+            var html =''
+            if(instance){
+            emenities = (instance.getSelectedValues())
+            }
+            fetch(`/api/gas/?emenities=${emenities}&available_amount=${available_amount.value}`)
+            .then(result => result.json())
+            .then(response => {
+           //     console.log(response)
+          //  })
+                for(var i=0; i <response.length; i++){
+                    html += `
+                    <div class="col s5 m3"
+                    <div class="col s4 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="${response[i].pump_image}">
+                            </div>
+                            <span class="card-title black-text">${response[i].pump_name}</span>
+                     
+                            <div class="card-content">
+                             Available amount - <span class="badge">${response[i].available_amount}</span>
+                            <h6>Address:</h6>
+                            <p>${(response[i].pump_address).substring(0 , 250)}</p> 
+                            </div>
+                            <div class="card-action">
+                            <a href="{% url 'contact' %}">Confirmation</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                `
+                }
+                show_gas_here.innerHTML = html
+            //console.log(html)
+           })
+
+
+        }
+        getGas()
+        </script>
+
+
+       
+    </body>
+</html>
